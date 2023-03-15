@@ -6,7 +6,8 @@
   },
   "scripts":{
     "deploy:skale": "npx hardhat run scripts/deploy.ts --network skale",
-    "deploy": "npx hardhat run scripts/deploy.ts --network testnet"
+    "deploy": "npx hardhat run scripts/deploy.ts --network testnet",
+    "compile": "npx hardhat compile"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.2",
