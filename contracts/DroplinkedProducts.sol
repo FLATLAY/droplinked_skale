@@ -31,10 +31,11 @@ contract DroplinkedProducts is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply 
         _setURI(newuri);
     }
 
-    function mint(address account, uint256 id, uint256 amount,string memory _uri, bytes memory data)
+    function mint(address account, uint256 amount,string memory _uri, bytes memory data)
         public
     {
-        _mint(account, id, amount, data);
+        uint256 tokenId = _tokenIdCounter.current();
+        _mint(account, tokenId, amount, data);
         setTokenURI(id, _uri);
         Product memory product;
         product.OwnerID = account;
