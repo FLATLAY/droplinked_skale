@@ -1,17 +1,26 @@
 import { HardhatUserConfig } from "hardhat/config";
+require('@openzeppelin/hardhat-upgrades');
 import "@nomicfoundation/hardhat-toolbox";
 import env from 'dotenv';
-const { API_URL, PRIVATE_KEY } = process.env;
-
 env.config();
+const { API_URL, PRIVATE_KEY, PRIVATE_KEY2, PRIVATE_KEY_SAKLE } = process.env;
+
+
 const config: HardhatUserConfig = {
   solidity: "0.8.18",
   defaultNetwork: "testnet",
   networks: {
-
-    testnet: {
-      url: "http://127.0.0.1:8545",
-      accounts: [`0x${PRIVATE_KEY}`]
+    skale_testnet: {
+      url: API_URL,
+      gas: "auto",
+      gasPrice: "auto",
+      accounts: [`0x${PRIVATE_KEY_SAKLE}`]
+    },
+    local: {
+      url: "http://127.0.0.1:7545",
+      gas: "auto",
+      gasPrice: "auto",
+      accounts: [`0x${PRIVATE_KEY}`, `0x${PRIVATE_KEY2}`]
     }
   }
 };
