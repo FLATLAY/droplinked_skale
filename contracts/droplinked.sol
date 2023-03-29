@@ -52,18 +52,23 @@ contract Droplinked is Initializable, Ownable {
 
     event ApprovedNFTEvent(string name, uint256 amount, address indexed NFTOwner, address indexed publisher, uint256 indexed tokenID, uint256 percentage);
     event publishRequestEvent(uint256 amount, address indexed NFTOwner, address indexed publisher, uint256 indexed tokenID, uint256 percentage);
-    event recordedEvent(uint256 amount, address indexed NFTOwner, uint256 indexed tokenID, string tokenURI);
+    event recordedEvent(uint256 price,uint256 amount, address indexed NFTOwner, uint256 indexed tokenID, string tokenURI);
 
     function initialize() public initializer {}
 
-    function recordData(uint256 _amount, string memory _tokenURI, bytes memory _data) public {
+    function recordData(string _name,uint256 _price,uint256 _amount, string memory _tokenURI, bytes memory _data) public {
         require(_amount > 0, "The amount can't be zero");
         (uint256 tokenID) = DroplinkedProductsNFT(NFTContract).mint(msg.sender, _amount, _tokenURI, _data);
         NFTHolder storage nftHolder = nftHolders[tokenID];
+        NFTMetaData storage nftMetaData = NFTMetaDatas[tokenID];
         nftHolder.amount = _amount;
         nftHolder.remainingAmount = _amount;
         nftHolder.tokenID = tokenID;
-        emit recordedEvent(_amount, msg.sender, tokenID, _tokenURI);
+        nftMetaData.tokenID = tokenID;
+        nftMetaData.price = _price;
+        nftMetaData.name = _name;
+        nftMetaData.tokenURI = _tokenURI;
+        emit recordedEvent(_price ,_amount, msg.sender, tokenID, _tokenURI);
     }
 
     function setNFTContract(address _contract) public onlyOwner {
