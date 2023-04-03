@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol"; 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./DroplinkedProductsNFT.sol";
@@ -56,7 +57,7 @@ contract Droplinked is Initializable, Ownable {
 
     function initialize() public initializer {}
 
-    function recordData(string _name,uint256 _price,uint256 _amount, string memory _tokenURI, bytes memory _data) public {
+    function recordData(string memory _name,uint256 _price,uint256 _amount, string memory _tokenURI, bytes memory _data) public {
         require(_amount > 0, "The amount can't be zero");
         (uint256 tokenID) = DroplinkedProductsNFT(NFTContract).mint(msg.sender, _amount, _tokenURI, _data);
         NFTHolder storage nftHolder = nftHolders[tokenID];
@@ -88,6 +89,7 @@ contract Droplinked is Initializable, Ownable {
         require(request.NFTOwner == msg.sender, "you can't accept this request");
         uint256 id = _approvedNFTID.current();
         ApprovedNFTs[msg.sender][id] = ApprovedNFT(_name,request.amount, msg.sender, request.publisher, request.tokenID, request.percentage);
+        IERC1155(NFTContract).safeTransferFrom(msg.sender, request.publisher, request.tokenID, request.amount, "0x");
         emit ApprovedNFTEvent(_name, request.amount, msg.sender, request.publisher, request.tokenID, request.percentage);
     }
 

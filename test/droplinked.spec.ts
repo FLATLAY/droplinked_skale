@@ -25,10 +25,12 @@ describe('Droplinked', async () => {
     await droplinked.setNFTContract(nftContract);
 
     // set record data to check on creating request
+    const name = "test"
     const amount = 10;
+    const price = 100000000;
     const tokenURI = 'https://example.com/nft';
     const data = '0x';
-    await droplinked.recordData(amount, tokenURI, data);
+    await droplinked.recordData(name, price, amount, tokenURI, data);
   });
 
   it("should set a contract Address as NFT", async () => {
@@ -42,17 +44,18 @@ describe('Droplinked', async () => {
   
 
   it('should allow recording data', async () => {
+    const name = "test"
     const amount = 10;
+    const price = 100000000;
     const tokenURI = 'https://example.com/nft';
     const data = '0x';
 
-    await droplinked.recordData(amount, tokenURI, data);
+    await droplinked.recordData(name, price,amount, tokenURI, data);
 
     const nftHolder = await droplinked.nftHolders(0);
     expect(nftHolder.remainingAmount).to.equal(amount);
     expect(nftHolder.amount).to.equal(amount);
     expect(nftHolder.tokenID).to.equal(0);
-
   });
 
   it('should allow creating publish request for NFT', async () => {
@@ -76,9 +79,12 @@ describe('Droplinked', async () => {
     const nftOwner = producer.address;
 
     await droplinked.connect(publisher).createPublishRequestForNFT(amount, 0, nftOwner, 0);
+    await droplinkedProductNFT.setApprovalForAll(droplinked.address, true);
     await droplinked.approvedNFTs(0, name);
 
     const approvedNFT = await droplinked.ApprovedNFTs(nftOwner, 0);
+    const nft = await droplinkedProductNFT.connect(publisher).balanceOf(publisher.address, approvedNFT.tokenID);
+    expect(nft).to.equal(amount);
     expect(approvedNFT.amount).to.equal(amount);
     expect(approvedNFT.NFTOwner).to.equal(nftOwner);
     expect(approvedNFT.publisher).to.equal(publisher.address);

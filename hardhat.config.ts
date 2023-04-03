@@ -8,7 +8,7 @@ const { API_URL, PRIVATE_KEY, PRIVATE_KEY2, PRIVATE_KEY_SAKLE } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: "0.8.18",
-  defaultNetwork: "testnet",
+  defaultNetwork: "local",
   networks: {
     skale_testnet: {
       url: API_URL,
