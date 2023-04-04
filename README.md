@@ -1,4 +1,4 @@
-# Droplinked-Skale
+# Droplinked-SKALE
 
 ## Introduction
 Droplinked-Skale is a protocol for registering products on the Skale blockchain and allowing 3rd party publishers to sell these products across different marketplaces, dapps, and websites, earning a commission in the process. Our platform also includes headless tooling for NFT gated store fronts on droplinked.com and other value-added NFT solutions.
